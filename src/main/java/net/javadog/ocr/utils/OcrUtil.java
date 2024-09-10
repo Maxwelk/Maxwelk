@@ -4,6 +4,7 @@ import com.benjaminwan.ocrlibrary.OcrResult;
 import io.github.mymonstercat.Model;
 import io.github.mymonstercat.ocr.InferenceEngine;
 
+import io.github.mymonstercat.ocr.config.ParamConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,10 +31,17 @@ public class OcrUtil {
             //tesseract.setLanguage("eng+chi_sim");
            // tesseract.setTessVariable("user_defined_dpi","300");
             //result = tesseract.doOCR(bufferedImage);
-            BufferedImage bufferedImage = image_Heighten(binarizeImage(targetImage));
+            //BufferedImage bufferedImage = image_Heighten(binarizeImage(targetImage));
             InferenceEngine engine = InferenceEngine.getInstance(Model.ONNX_PPOCR_V4);
-            ImageIO.write(bufferedImage,"png", new File(property+"\\ocrdata\\temp.png"));
-             ocrResult = engine.runOcr(property+"\\ocrdata\\temp.png");
+
+            ImageIO.write(targetImage,"png", new File(property+"\\ocrdata\\temp.png"));
+            //ImageIO.write(targetImage,"png", new File("C:\\wxy11"+"\\ocrdata\\temp.png"));
+            ParamConfig paramConfig = new ParamConfig();
+            //paramConfig.setMaxSideLen(2);
+            paramConfig.setMostAngle(true);
+            paramConfig.setDoAngle(true);
+            ocrResult = engine.runOcr(property+"\\ocrdata\\temp.png",paramConfig);
+            //ocrResult = engine.runOcr("C:\\wxy11"+"\\ocrdata\\temp.png",paramConfig);
             log.info("ocr result = {}", ocrResult.getStrRes());
         } catch (Exception e) {
             log.error("ocrSense error",e);
