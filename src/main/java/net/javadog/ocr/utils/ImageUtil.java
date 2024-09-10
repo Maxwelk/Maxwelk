@@ -1,3 +1,4 @@
+package net.javadog.ocr.utils;
 
 import javax.swing.*;
 import java.awt.*;
