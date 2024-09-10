@@ -34,7 +34,7 @@ public class OcrUtil {
             //BufferedImage bufferedImage = image_Heighten(binarizeImage(targetImage));
             InferenceEngine engine = InferenceEngine.getInstance(Model.ONNX_PPOCR_V4);
 
-            ImageIO.write(targetImage,"png", new File(property+"\\ocrdata\\temp.png"));
+            ImageIO.write(binarizeImage(targetImage),"png", new File(property+"\\ocrdata\\temp.png"));
             //ImageIO.write(targetImage,"png", new File("C:\\wxy11"+"\\ocrdata\\temp.png"));
             ParamConfig paramConfig = new ParamConfig();
             //paramConfig.setMaxSideLen(2);
@@ -90,7 +90,7 @@ public class OcrUtil {
     private static BufferedImage binarizeImage(BufferedImage originalImage) {
         int width = originalImage.getWidth();
         int height = originalImage.getHeight();
-        BufferedImage binaryImage = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
+        //BufferedImage binaryImage = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
 
         // 设置阈值
         int threshold = 128;
@@ -103,18 +103,24 @@ public class OcrUtil {
                 int green = (rgb >> 8) & 0xFF;
                 int blue = rgb & 0xFF;
 
-                // 转换为灰度值
-                int gray = (red + green + blue) / 3;
-                // 二值化处理
-                if (gray < threshold) {
-                    binaryImage.setRGB(x, y, 0xFF000000); // 黑色
-                } else {
-                    binaryImage.setRGB(x, y, 0xFFFFFFFF); // 白色
+//                // 转换为灰度值
+//                int gray = (red + green + blue) / 3;
+//                // 二值化处理
+//                if (gray < threshold) {
+//                    binaryImage.setRGB(x, y, 0xFF000000); // 黑色
+//                } else {
+//                    binaryImage.setRGB(x, y, 0xFFFFFFFF); // 白色
+//                }
+                if (red>250 && green>190 && blue>190) {
+                    originalImage.setRGB(x, y, 0xFFFFFFFF);
+                }
+                if (red<85 && green<31 && blue>31) {
+                    originalImage.setRGB(x, y, 0xFF000000);
                 }
             }
         }
 
-        return binaryImage;
+        return originalImage;
     }
 
 
