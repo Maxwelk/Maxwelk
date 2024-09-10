@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!-- 指定当前pom的版本 -->
+    <modelVersion>4.0.0</modelVersion>
+    <!--项目主标识，用于定义当前项目属于的实际项目，格式与项目创建的包是一样的，通常为域名反写-->
+    <groupId>net.wxy.ocr</groupId>
+    <!--项目的通用名称-->
+    <artifactId>ocr-java</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+
+    <properties>
+        <!--指定java编译器源代码版本-->
+        <maven.compiler.source>11</maven.compiler.source>
+        <!--指定java编译器源目标版本-->
+        <maven.compiler.target>11</maven.compiler.target>
+        <!--强制字符集编码-->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!--强制输出报告字符集编码-->
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!--Java版本号-->
+        <java.version>11</java.version>
+
+        <!-- BeautyEye - Java Swing 跨平台外观实现 -->
+        <BeautyEye.version>1.0.0</BeautyEye.version>
+        <!-- json JSON解析工具 -->
+        <json.version>20160810</json.version>
+        <!-- commons-io IO常用工具类 -->
+        <commons-io.version>2.4</commons-io.version>
+        <!-- Hutool Java 工具集 -->
+        <hutool.version>5.5.8</hutool.version>
+        <!-- Lombok java 类库 -->
+        <lombok.version>1.18.12</lombok.version>
+
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.bulucat</groupId>
+            <artifactId>BeautyEye</artifactId>
+            <version>${BeautyEye.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.mymonstercat</groupId>
+            <artifactId>rapidocr</artifactId>
+            <version>0.0.7</version>
+        </dependency>
+
+        <!--  一般只需要引入一个，CPU端建议使用onnx，移动端建议使用ncnn     -->
+        <!--  可前往maven中央仓库https://central.sonatype.com/artifact/io.github.mymonstercat/rapidocr-onnx-platform/versions，查看版本      -->
+        <dependency>
+            <groupId>io.github.mymonstercat</groupId>
+            <artifactId>rapidocr-onnx-platform</artifactId>
+            <version>0.0.7</version>
+        </dependency>
+
+
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <!--给jar包起的别名-->
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <!--添加项目中主类-->
+                            <mainClass>net/javadog/ocr/Application</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
